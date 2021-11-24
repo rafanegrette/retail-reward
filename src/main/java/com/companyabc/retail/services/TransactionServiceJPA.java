@@ -5,15 +5,18 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import com.companyabc.retail.domain.Client;
 import com.companyabc.retail.domain.Transaction;
 import com.companyabc.retail.repositories.TransactionRepository;
 
 class TransactionServiceJPA implements TransactionService {
 
-	private final TransactionRepository transactionRepository;
+	@Value("${app.transactions.months:3}")
+	private Integer noLastMonthsTransactions;
 	
-
+	private final TransactionRepository transactionRepository;
 	
 	public TransactionServiceJPA(TransactionRepository transactionRepository) {
 		super();
@@ -30,15 +33,17 @@ class TransactionServiceJPA implements TransactionService {
 
 	@Override
 	public List<Transaction> findLastTransactionsByClientFrom(Client client, LocalDate date) {
-		// TODO Auto-generated method stub
-		return null;
+		LocalDate startDate = date.plusMonths(noLastMonthsTransactions * -1).withDayOfMonth(1);
+		List<Transaction> transactions = transactionRepository.findAllByClientAndDateBetween(client, startDate, date);
+		return transactions;
 	}
 
 
 	@Override
 	public List<Transaction> findLastTransactionsFrom(LocalDate date) {
-		// TODO Auto-generated method stub
-		return null;
+		LocalDate startDate = date.plusMonths(noLastMonthsTransactions * -1).withDayOfMonth(1);
+		List<Transaction> transactions = transactionRepository.findAllByDateBetween(startDate, date);
+		return transactions;
 	}
 
 }
