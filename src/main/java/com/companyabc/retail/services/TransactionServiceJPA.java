@@ -3,6 +3,7 @@ package com.companyabc.retail.services;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -33,16 +34,16 @@ class TransactionServiceJPA implements TransactionService {
 
 	@Override
 	public List<Transaction> findLastTransactionsByClientFrom(Client client, LocalDate date) {
-		LocalDate startDate = date.plusMonths(noLastMonthsTransactions * -1).withDayOfMonth(1);
-		List<Transaction> transactions = transactionRepository.findAllByClientAndDateBetween(client, startDate, date);
+		LocalDateTime startDate = date.plusMonths(noLastMonthsTransactions * -1).withDayOfMonth(1).atTime(LocalTime.of(0, 0));
+		List<Transaction> transactions = transactionRepository.findAllByClientAndDateBetween(client, startDate, date.atTime(0,0));
 		return transactions;
 	}
 
 
 	@Override
 	public List<Transaction> findLastTransactionsFrom(LocalDate date) {
-		LocalDate startDate = date.plusMonths(noLastMonthsTransactions * -1).withDayOfMonth(1);
-		List<Transaction> transactions = transactionRepository.findAllByDateBetween(startDate, date);
+		LocalDateTime startDate = date.plusMonths(noLastMonthsTransactions * -1).withDayOfMonth(1).atTime(LocalTime.of(0, 0));
+		List<Transaction> transactions = transactionRepository.findAllByDateBetween(startDate, date.atTime(0, 0));
 		return transactions;
 	}
 

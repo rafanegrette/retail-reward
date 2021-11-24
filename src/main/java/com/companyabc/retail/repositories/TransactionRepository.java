@@ -1,16 +1,22 @@
 package com.companyabc.retail.repositories;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.companyabc.retail.domain.Client;
 import com.companyabc.retail.domain.Transaction;
 
-public interface TransactionRepository {
-
-	void save(Transaction transaction);
+public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 	
-	List<Transaction> findAllByClientAndDateBetween(Client client, LocalDate initDate, LocalDate endDate);
+	@Query(value = "SELECT t FROM Transaction t WHERE t.client.id = :#{#client.id} AND t.dateTime BETWEEN :initDate AND :endDate")
+	List<Transaction> findAllByClientAndDateBetween(@Param("client") Client client, 
+			@Param("initDate") LocalDateTime initDate, 
+			@Param("endDate") LocalDateTime endDate);
 	
-	List<Transaction> findAllByDateBetween(LocalDate initDate, LocalDate endDate);
+	@Query(value = "SELECT t FROM Transaction t WHERE t.dateTime BETWEEN :initDate AND :endDate")
+	List<Transaction> findAllByDateBetween(@Param("initDate") LocalDateTime initDate, @Param("endDate") LocalDateTime endDate);
 }

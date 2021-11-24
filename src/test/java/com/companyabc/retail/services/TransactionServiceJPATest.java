@@ -1,7 +1,6 @@
 package com.companyabc.retail.services;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -33,6 +32,9 @@ class TransactionServiceJPATest {
 	List<Transaction> transactionsClient1 = new ArrayList<>();
 	List<Transaction> transactionsClient2 = new ArrayList<>();
 	
+
+	LocalDateTime initDate = LocalDate.of(2021, 8, 1).atTime(0,0);
+	LocalDateTime endDate = LocalDate.of(2021, 11, 30).atTime(0,0); 
 	
 	@Mock
 	TransactionRepository transactionRepository;
@@ -83,7 +85,7 @@ class TransactionServiceJPATest {
 		
 		// WHEN
 		ReflectionTestUtils.setField(transactionService, "noLastMonthsTransactions", 3);
-		when(transactionRepository.findAllByClientAndDateBetween(client1, LocalDate.of(2021, 8, 1), LocalDate.of(2021, 11, 30)))
+		when(transactionRepository.findAllByClientAndDateBetween(client1, initDate, endDate))
 								.thenReturn(transactionsClient1);
 		List<Transaction> transactionsReturned = transactionService.findLastTransactionsByClientFrom(client1, LocalDate.of(2021, 11, 30));
 		
@@ -101,7 +103,7 @@ class TransactionServiceJPATest {
 		
 		// WHEN
 		ReflectionTestUtils.setField(transactionService, "noLastMonthsTransactions", 3);
-		when(transactionRepository.findAllByDateBetween(LocalDate.of(2021, 8, 1), LocalDate.of(2021, 11, 30))).thenReturn(totalTransactions);
+		when(transactionRepository.findAllByDateBetween(initDate, endDate)).thenReturn(totalTransactions);
 		List<Transaction> transactionsReturned = transactionService.findLastTransactionsFrom(LocalDate.of(2021, 11, 30));
 		
 		// THEN
