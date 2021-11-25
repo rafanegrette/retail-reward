@@ -11,4 +11,7 @@ public interface TransactionService {
 	void recibePayment(TransactionDTO transaction);
 	List<Transaction> findLastTransactionsByClientFrom(Client client, LocalDate date);
 	List<Transaction> findLastTransactionsFrom(LocalDate date);
+	List<TransactionDTO> findAll();
+	void update(Long idTransaction, TransactionDTO transactionDTO);
+	void delete(Long idTransaction);
 }

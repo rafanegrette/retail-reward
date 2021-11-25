@@ -35,7 +35,7 @@ class TransactionServiceJPATest {
 	List<Transaction> transactionsClient2 = new ArrayList<>();
 	
 
-	LocalDateTime initDate = LocalDate.of(2021, 8, 1).atTime(0,0);
+	LocalDateTime initDate = LocalDate.of(2021, 9, 1).atTime(0,0);
 	LocalDateTime endDate = LocalDate.of(2021, 11, 30).atTime(0,0); 
 	
 	@Mock
