@@ -22,6 +22,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import com.companyabc.retail.domain.Client;
 import com.companyabc.retail.domain.Transaction;
+import com.companyabc.retail.model.TransactionDTO;
 import com.companyabc.retail.repositories.TransactionRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,6 +39,9 @@ class TransactionServiceJPATest {
 	
 	@Mock
 	TransactionRepository transactionRepository;
+	
+	@Mock
+	ClientService clientService;
 	
 	@InjectMocks
 	TransactionServiceJPA transactionService;
@@ -71,9 +75,10 @@ class TransactionServiceJPATest {
 	void testRecibePayment() {
 		//GIVEN
 		BigDecimal amount = BigDecimal.valueOf(40.00);
-		
+		TransactionDTO transactionDTO = new TransactionDTO(1L, amount, LocalDateTime.now());
 		//WHEN
-		transactionService.recibePayment(client1, amount);
+		when(clientService.findById(1L)).thenReturn(client1);
+		transactionService.recibePayment(transactionDTO);
 		
 		//THEN
 		verify(transactionRepository, times(1)).save(any(Transaction.class));

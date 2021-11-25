@@ -1,8 +1,11 @@
 package com.companyabc.retail.services;
 
 import com.companyabc.retail.domain.Client;
+import com.companyabc.retail.model.ClientDTO;
 
 public interface ClientService {
 
-	Client create(Client client);
+	Integer create(ClientDTO clientDTO);
+
+	Client findById(long idClient);
 }
