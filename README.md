@@ -6,3 +6,5 @@ Requirements
 
 - Java 8.
 - Checkout and run: ./mvnw spring-boot:run
+
+Use this Url to review the API documentation : http://localhost:8080/swagger-ui.html

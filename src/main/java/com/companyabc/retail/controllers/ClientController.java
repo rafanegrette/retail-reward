@@ -8,11 +8,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.companyabc.retail.config.SwaggerConfig;
 import com.companyabc.retail.model.ClientDTO;
 import com.companyabc.retail.services.ClientService;
 import com.companyabc.retail.services.exceptions.ClientNotExistException;
 import com.companyabc.retail.services.exceptions.InvalidClientException;
 
+import io.swagger.annotations.Api;
+
+@Api(tags = {SwaggerConfig.CLIENT_TAG})
 @RestController
 @RequestMapping("clients")
 public class ClientController {

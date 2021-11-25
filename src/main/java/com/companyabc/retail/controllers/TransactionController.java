@@ -16,10 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.companyabc.retail.config.SwaggerConfig;
 import com.companyabc.retail.model.TransactionDTO;
 import com.companyabc.retail.services.TransactionService;
 import com.companyabc.retail.services.exceptions.InvalidTransactionException;
 
+import io.swagger.annotations.Api;
+
+
+@Api(tags = {SwaggerConfig.TRANSACTION_TAG})
 @RestController
 @RequestMapping("transactions")
 public class TransactionController {
