@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -77,7 +78,7 @@ class TransactionServiceJPATest {
 		BigDecimal amount = BigDecimal.valueOf(40.00);
 		TransactionDTO transactionDTO = new TransactionDTO(1L, amount, LocalDateTime.now());
 		//WHEN
-		when(clientService.findById(1L)).thenReturn(client1);
+		when(clientService.findById(1L)).thenReturn(Optional.of(client1));
 		transactionService.recibePayment(transactionDTO);
 		
 		//THEN

@@ -27,7 +27,7 @@ public class ClientController {
 	@PostMapping
 	public ResponseEntity<String> createClient(@RequestBody ClientDTO client){
 		try {
-			Integer idClient = clientService.create(client);
+			Long idClient = clientService.create(client);
 			return new ResponseEntity<>(idClient.toString(), HttpStatus.CREATED);
 		} catch (InvalidClientException iEx) {
 			return new ResponseEntity<>(iEx.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);

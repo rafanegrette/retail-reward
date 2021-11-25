@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import com.companyabc.retail.domain.Client;
 import com.companyabc.retail.domain.Transaction;
 import com.companyabc.retail.model.TransactionDTO;
 import com.companyabc.retail.repositories.TransactionRepository;
+import com.companyabc.retail.services.exceptions.InvalidTransactionException;
 
 @Service
 class TransactionServiceJPA implements TransactionService {
@@ -32,8 +34,11 @@ class TransactionServiceJPA implements TransactionService {
 
 	@Override
 	public void recibePayment(TransactionDTO transactionDTO) {
-		Client client = clientService.findById(transactionDTO.getIdClient());
-		Transaction transaction = new Transaction(client, transactionDTO.getAmount(), transactionDTO.getDateTime());
+		Optional<Client> clientOptional = clientService.findById(transactionDTO.getIdClient());
+		Client client = clientOptional.orElseThrow(InvalidTransactionException::new);
+		
+		Transaction transaction = new Transaction(client, 
+				transactionDTO.getAmount(), transactionDTO.getDateTime());
 		transactionRepository.save(transaction);
 	}
 

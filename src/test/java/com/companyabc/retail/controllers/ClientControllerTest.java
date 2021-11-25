@@ -45,7 +45,7 @@ class ClientControllerTest {
 		String clientDTOstr = object.writeValueAsString(clientDTO);
 		
 		// WHEN
-		when(clientService.create(clientDTO)).thenReturn(1);
+		when(clientService.create(clientDTO)).thenReturn(1L);
 		
 		// THEN
 		MvcResult mvcResult = this.mockMvc.perform(post("/clients").contentType(MediaType.APPLICATION_JSON_VALUE).content(clientDTOstr)).andExpect(status().isCreated()).andReturn();

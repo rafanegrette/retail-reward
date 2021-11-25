@@ -1,11 +1,13 @@
 package com.companyabc.retail.services;
 
+import java.util.Optional;
+
 import com.companyabc.retail.domain.Client;
 import com.companyabc.retail.model.ClientDTO;
 
 public interface ClientService {
 
-	Integer create(ClientDTO clientDTO);
+	Long create(ClientDTO clientDTO);
 
-	Client findById(long idClient);
+	Optional<Client> findById(long idClient);
 }
