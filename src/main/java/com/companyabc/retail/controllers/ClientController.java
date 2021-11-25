@@ -5,10 +5,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.companyabc.retail.model.ClientDTO;
 import com.companyabc.retail.services.ClientService;
+import com.companyabc.retail.services.exceptions.ClientNotExistException;
 import com.companyabc.retail.services.exceptions.InvalidClientException;
 
 @RestController
@@ -31,6 +33,14 @@ public class ClientController {
 			return new ResponseEntity<>(idClient.toString(), HttpStatus.CREATED);
 		} catch (InvalidClientException iEx) {
 			return new ResponseEntity<>(iEx.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+	}
+	
+	public ResponseEntity<ClientDTO> findById(@RequestParam("id") Long idClient) {
+		try {
+			return new ResponseEntity<>(clientService.findDTOById(idClient), HttpStatus.OK);
+		} catch (ClientNotExistException cEx) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 	}
 }

@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,6 +27,9 @@ class RewardServiceImplTest {
 
 	@Mock
 	TransactionService transactionService;
+	
+	@Mock
+	ClientService clientService;
 	
 	@InjectMocks
 	RewardServiceImpl rewardService;
@@ -63,8 +67,9 @@ class RewardServiceImplTest {
 	@Test
 	void testCalculateTotalByClient() {
 		// WHEN
+		when(clientService.findById(1L)).thenReturn(Optional.of(client1));
 		when(transactionService.findLastTransactionsByClientFrom(client1, LocalDate.of(2021, 11, 30))).thenReturn(transactionsClient1);
-		RewardReportDTO report = rewardService.calculateByClient(client1, LocalDate.of(2021, 11, 30));
+		RewardReportDTO report = rewardService.calculateByClient(1L, LocalDate.of(2021, 11, 30));
 		
 		// THEN
 		// T1: 0 pts
@@ -79,8 +84,9 @@ class RewardServiceImplTest {
 	@Test
 	void testCalculateMonthlyByClient() {
 		// WHEN
+		when(clientService.findById(1L)).thenReturn(Optional.of(client1));
 		when(transactionService.findLastTransactionsByClientFrom(client1, LocalDate.of(2021, 11, 30))).thenReturn(transactionsClient1);
-		RewardReportDTO report = rewardService.calculateByClient(client1, LocalDate.of(2021, 11, 30));
+		RewardReportDTO report = rewardService.calculateByClient(1L, LocalDate.of(2021, 11, 30));
 		
 		// THEN
 		assertEquals(150, report.getMonths().get(Month.NOVEMBER));

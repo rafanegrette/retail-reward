@@ -10,4 +10,6 @@ public interface ClientService {
 	Long create(ClientDTO clientDTO);
 
 	Optional<Client> findById(long idClient);
+	
+	ClientDTO findDTOById(long idClient);
 }

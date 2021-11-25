@@ -8,7 +8,7 @@ import com.companyabc.retail.model.RewardReportDTO;
 
 public interface RewardService {
 
-	RewardReportDTO calculateByClient(Client client, LocalDate date);
+	RewardReportDTO calculateByClient(Long idClient, LocalDate date);
 	
 	List<RewardReportDTO> calculateAll(LocalDate date);
 }

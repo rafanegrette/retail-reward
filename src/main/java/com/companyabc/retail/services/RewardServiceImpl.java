@@ -10,35 +10,34 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Service;
+
 import com.companyabc.retail.domain.Client;
 import com.companyabc.retail.domain.Transaction;
 import com.companyabc.retail.model.RewardReportDTO;
+import com.companyabc.retail.services.exceptions.ClientNotExistException;
 
+@Service
 public class RewardServiceImpl implements RewardService {
 
 	private final BigDecimal FIFTY = BigDecimal.valueOf(50);
 	private final BigDecimal ONE_HUNDRED = BigDecimal.valueOf(100);
 	
 	private final TransactionService transactionService;
+	private final ClientService clientService;
 	
-	public RewardServiceImpl(TransactionService transactionService) {
+	public RewardServiceImpl(TransactionService transactionService,
+							ClientService clientService) {
 		super();
 		this.transactionService = transactionService;
+		this.clientService = clientService;
 	}
 
 	@Override
-	public RewardReportDTO calculateByClient(final Client client, final LocalDate date) {
-		
+	public RewardReportDTO calculateByClient(final Long idClient, final LocalDate date) {
+		Client client = clientService.findById(idClient).orElseThrow(ClientNotExistException::new);
 		List<Transaction> transactions = transactionService.findLastTransactionsByClientFrom(client, date);
 		return getReportByClient(client, date, transactions);
-	}
-
-	private RewardReportDTO getReportByClient(final Client client, final LocalDate date, final List<Transaction> transactions) {
-		Integer totalPoints = transactions.stream().map(t -> t.getAmount()).mapToInt(a -> calculatePoints(a)).sum();
-		
-		Map<Month, Integer> monthlyPoints = calculateMonthlyPoints(transactions, date);
-		RewardReportDTO report = new RewardReportDTO(client.getLastName(), monthlyPoints, totalPoints);
-		return report;
 	}
 
 	@Override
@@ -51,6 +50,13 @@ public class RewardServiceImpl implements RewardService {
 		return reports;
 	}
 	
+	private RewardReportDTO getReportByClient(final Client client, final LocalDate date, final List<Transaction> transactions) {
+		Integer totalPoints = transactions.stream().map(t -> t.getAmount()).mapToInt(a -> calculatePoints(a)).sum();
+		
+		Map<Month, Integer> monthlyPoints = calculateMonthlyPoints(transactions, date);
+		RewardReportDTO report = new RewardReportDTO(client.getLastName(), monthlyPoints, totalPoints);
+		return report;
+	}
 	
 	private Map<Month, Integer> calculateMonthlyPoints(final List<Transaction> transactions, final LocalDate date) {
 		Map<Month, Integer> monthlyPoints = initializeLastMonths(date);

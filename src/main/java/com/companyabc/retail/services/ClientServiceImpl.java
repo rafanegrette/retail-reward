@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.companyabc.retail.domain.Client;
 import com.companyabc.retail.model.ClientDTO;
 import com.companyabc.retail.repositories.ClientRepository;
+import com.companyabc.retail.services.exceptions.ClientNotExistException;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -28,6 +29,13 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public Optional<Client> findById(long idClient) {
 		return clientRepository.findById(idClient);
+	}
+
+	@Override
+	public ClientDTO findDTOById(long idClient) {
+		Client client = clientRepository.findById(idClient).orElseThrow(ClientNotExistException::new);
+		ClientDTO clientDTO = new ClientDTO(client.getFirstName(), client.getLastName());
+		return clientDTO;
 	}
 
 }
