@@ -14,10 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.companyabc.retail.config.SwaggerConfig;
 import com.companyabc.retail.model.RewardReportDTO;
 import com.companyabc.retail.services.RewardService;
 import com.companyabc.retail.services.exceptions.ClientNotExistException;
 
+import io.swagger.annotations.Api;
+
+@Api(tags = {SwaggerConfig.REWARD_TAG})
 @RestController
 @RequestMapping("rewards")
 public class RewardController {
