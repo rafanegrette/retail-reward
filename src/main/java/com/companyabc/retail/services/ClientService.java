@@ -1,5 +1,6 @@
 package com.companyabc.retail.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.companyabc.retail.domain.Client;
@@ -12,4 +13,8 @@ public interface ClientService {
 	Optional<Client> findById(long idClient);
 	
 	ClientDTO findDTOById(long idClient);
+
+	List<ClientDTO> findDTOAll();
+
+	void deleteById(Long idClient);
 }

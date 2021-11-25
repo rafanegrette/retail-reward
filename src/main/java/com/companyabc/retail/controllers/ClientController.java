@@ -1,11 +1,15 @@
 package com.companyabc.retail.controllers;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.companyabc.retail.config.SwaggerConfig;
@@ -40,11 +44,27 @@ public class ClientController {
 		}
 	}
 	
-	public ResponseEntity<ClientDTO> findById(@RequestParam("id") Long idClient) {
+	@GetMapping(value = "{idClient}")
+	public ResponseEntity<ClientDTO> findById(@PathVariable("idClient") Long idClient) {
 		try {
 			return new ResponseEntity<>(clientService.findDTOById(idClient), HttpStatus.OK);
 		} catch (ClientNotExistException cEx) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
+	}
+	
+	@GetMapping
+	public ResponseEntity<List<ClientDTO>> findById() {
+		try {
+			return new ResponseEntity<>(clientService.findDTOAll(), HttpStatus.OK);
+		} catch (ClientNotExistException cEx) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+	}
+	
+	@DeleteMapping(value = "{idClient}")
+	public ResponseEntity<String> delete(@PathVariable("idClient") Long idClient) {
+		clientService.deleteById(idClient);
+		return new ResponseEntity<>("Client deleted", HttpStatus.OK);
 	}
 }
