@@ -25,4 +25,10 @@ public class ErrorHandlerController {
 	public GenericException handleDataError(DataIntegrityViolationException ex) {
 		return new GenericException("DATA_INTEGRITY", DATA_INTEGRITY_TEXT);
 	}
+	
+	@ExceptionHandler(IllegalArgumentException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	public GenericException handleArgumentError(IllegalArgumentException ex) {
+		return new GenericException("ILLEGAL_ARGUMENT", ex.getMessage());
+	}
 }
