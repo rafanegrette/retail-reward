@@ -1,6 +1,8 @@
 # Retail-reward system
 Springboot demo project of a retailer that offers rewards program to his customers.
 
+The database is an in-memory H2, and at startup, it loads some data for testing, two clients and several transactions.
+
 Requirements
 ====
 
