@@ -1,6 +1,8 @@
 package com.companyabc.retail.services;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -34,8 +36,20 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	public ClientDTO findDTOById(long idClient) {
 		Client client = clientRepository.findById(idClient).orElseThrow(ClientNotExistException::new);
-		ClientDTO clientDTO = new ClientDTO(client.getFirstName(), client.getLastName());
-		return clientDTO;
+		return new ClientDTO(client.getFirstName(), client.getLastName());
+	}
+
+	@Override
+	public List<ClientDTO> findDTOAll() {
+		return clientRepository.findAll().stream()
+				.map(c -> new ClientDTO(c.getFirstName(), c.getLastName()))
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public void deleteById(Long idClient) {
+		clientRepository.deleteById(idClient);
+		
 	}
 
 }
